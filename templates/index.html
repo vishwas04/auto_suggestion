@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/style.css">
+    <title>Auto Suggestion</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+    <h1>START TYPING...</h1>
+    <input id="in">
+    <div id="out">hi</div>
+    <script>
+        $(document).ready(function(){
+            $("#in").on( "input",function(){
+                $.ajax({
+                    data:{
+                        x:$("#in").val().replace(/\s+/g, ' ').trim()
+                    },
+                    type:"POST",
+                    url:"/find"
+                })
+                .done(function(data)
+                {
+                    if(data.error)
+                    {
+                        console.log("error");
+                    }
+                    else
+                    {
+                        //console.log("output- ");
+                        o="";
+                        for (let i=0;i<4 ; i++)
+                        {
+                            //console.log(data.x[i][0]);
+                            
+                            o=o.concat(data.x[i][0])
+                            o = o.concat("<br>");
+                            //console.log($("#out").text);
+                        }
+                        $('#out').html(o);
+                        console.log(o)
+                    }
+
+                });
+            });
+        });
+        
+    </script>
+</body>
+</html>
